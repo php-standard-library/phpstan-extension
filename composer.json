@@ -1,7 +1,7 @@
 {
-    "name": "phpstan/phpstan-webmozart-assert",
+    "name": "backendtea/psl-phpstan-extension",
     "type": "phpstan-extension",
-    "description": "PHPStan webmozart/assert extension",
+    "description": "PHPStan psl extension",
     "license": [
         "MIT"
     ],
