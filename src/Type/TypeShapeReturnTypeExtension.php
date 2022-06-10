@@ -36,13 +36,22 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 			return null;
 		}
 
-		$typeInterfaceType = new ObjectType(TypeInterface::class);
+		return new GenericObjectType(
+			TypeInterface::class,
+			[
+				$this->createResult($scope, $arg),
+			]
+		);
+	}
 
+	private function createResult(Scope $scope, ConstantArrayType $arrayType): Type
+	{
+		$typeInterfaceType = new ObjectType(TypeInterface::class);
 		$properties = [];
 		$optionalKeys = [];
-		foreach ($arg->getKeyTypes() as $i => $key) {
+		foreach ($arrayType->getKeyTypes() as $i => $key) {
 			$realKey = $key->getValue();
-			$valueType = $arg->getOffsetValueType($key);
+			$valueType = $arrayType->getOffsetValueType($key);
 			recheck:
 
 			if ($valueType instanceof GenericObjectType && $valueType->accepts($typeInterfaceType, $scope->isDeclareStrictTypes())->yes()) {
@@ -64,16 +73,11 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 			array_keys($properties)
 		);
 
-		return new GenericObjectType(
-			TypeInterface::class,
-			[
-				new ConstantArrayType(
-					$keys,
-					array_values($properties),
-					[0],
-					$optionalKeys
-				),
-			]
+		return new ConstantArrayType(
+			$keys,
+			array_values($properties),
+			[0],
+			$optionalKeys
 		);
 	}
 
