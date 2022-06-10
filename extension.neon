@@ -1,9 +1,12 @@
+parameters:
+	stubFiles:
+		- stubs/optional.stub
+		- stubs/OptionalType.stub
+		- stubs/Type.stub
+		- stubs/TypeInterface.stub
+
 services:
 	-
 		class: Psl\PHPStan\Type\TypeShapeReturnTypeExtension
-		tags:
-			- phpstan.broker.dynamicFunctionReturnTypeExtension
-	-
-		class: Psl\PHPStan\Type\TypeOptionalReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicFunctionReturnTypeExtension

@@ -8,13 +8,12 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\DynamicFunctionReturnTypeExtension;
-use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeUtils;
-use PHPStan\Type\UnionType;
+use PHPStan\Type\TypeWithClassName;
+use Psl\Type\Internal\OptionalType;
 use Psl\Type\TypeInterface;
 use function count;
 
@@ -28,6 +27,7 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 
 	public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
 	{
+		// todo check no-arg call
 		$arg = $scope->getType($functionCall->getArgs()[0]->value);
 		$arrays = TypeUtils::getConstantArrays($arg);
 		if (count($arrays) === 0) {
@@ -36,7 +36,12 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 
 		$results = [];
 		foreach ($arrays as $array) {
-			$results[] = $this->createResult($scope, $array);
+			$result = $this->createResult($array);
+			if ($result === null) {
+				return null;
+			}
+
+			$results[] = $result;
 		}
 
 		return new GenericObjectType(
@@ -47,27 +52,65 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 		);
 	}
 
-	private function createResult(Scope $scope, ConstantArrayType $arrayType): Type
+	private function createResult(ConstantArrayType $arrayType): ?Type
 	{
-		$typeInterfaceType = new ObjectType(TypeInterface::class);
 		$builder = ConstantArrayTypeBuilder::createEmpty();
 		foreach ($arrayType->getKeyTypes() as $key) {
 			$valueType = $arrayType->getOffsetValueType($key);
-			$optional = false;
-			if ($valueType instanceof UnionType) {
-				$valueType = $valueType->getTypes()[0];
-				$optional = true;
+			if (!$valueType instanceof TypeWithClassName) {
+				return null;
 			}
 
-			if ($valueType instanceof GenericObjectType && $valueType->accepts($typeInterfaceType, $scope->isDeclareStrictTypes())->yes()) {
-				$builder->setOffsetValueType($key, $valueType->getTypes()[0], $optional);
-				continue;
+			$valueClassReflection = $valueType->getClassReflection();
+			if ($valueClassReflection === null) {
+				return null;
 			}
 
-			return new ErrorType();
+			$typeInterfaceAncestor = $valueClassReflection->getAncestorWithClassName(TypeInterface::class);
+			if ($typeInterfaceAncestor === null) {
+				return null;
+			}
+
+			$typeMap = $typeInterfaceAncestor->getActiveTemplateTypeMap();
+			$t = $typeMap->getType('T');
+			if ($t === null) {
+				return null;
+			}
+
+			[$type, $optional] = $this->extractOptional($t);
+
+			$builder->setOffsetValueType($key, $type, $optional);
 		}
 
 		return $builder->getArray();
+	}
+
+	/**
+	 * @param Type $type
+	 * @return array{Type, bool}
+	 */
+	private function extractOptional(Type $type): array
+	{
+		if (!$type instanceof TypeWithClassName) {
+			return [$type, false];
+		}
+
+		$classReflection = $type->getClassReflection();
+		if ($classReflection === null) {
+			return [$type, false];
+		}
+		$optionalTypeAncestor = $classReflection->getAncestorWithClassName(OptionalType::class);
+		if ($optionalTypeAncestor === null) {
+			return [$type, false];
+		}
+
+		$typeMap = $optionalTypeAncestor->getActiveTemplateTypeMap();
+		$t = $typeMap->getType('T');
+		if ($t === null) {
+			return [$type, false];
+		}
+
+		return [$t, true];
 	}
 
 }

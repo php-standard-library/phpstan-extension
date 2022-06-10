@@ -1,0 +1,17 @@
+<?php
+
+namespace Psl\Type\Internal;
+
+use Psl\Type;
+
+/**
+ * @template T
+ *
+ * @extends Type\Type<T>
+ *
+ * @internal
+ */
+final class OptionalType extends Type\Type
+{
+
+}

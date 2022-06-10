@@ -1,0 +1,13 @@
+<?php
+
+namespace Psl\Type;
+
+/**
+ * @template-covariant T
+ *
+ * @implements TypeInterface<T>
+ */
+abstract class Type implements TypeInterface
+{
+
+}
