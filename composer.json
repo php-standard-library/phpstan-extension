@@ -14,7 +14,8 @@
     },
     "require-dev": {
         "azjezz/psl": "^1.6||^2.0",
-		"nikic/php-parser": "^4.14.0",
+        "composer/semver": "^3.3",
+        "nikic/php-parser": "^4.14.0",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpstan/phpstan-phpunit": "^1.0",
         "phpstan/phpstan-strict-rules": "^1.0",

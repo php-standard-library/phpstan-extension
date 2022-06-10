@@ -2,6 +2,8 @@
 
 namespace Psl\PHPStan\Type;
 
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use PHPStan\Testing\TypeInferenceTestCase;
 
 class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
@@ -15,6 +17,11 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/coerce.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/assert.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/matches.php');
+		if (InstalledVersions::satisfies(new VersionParser(), 'azjezz/psl', '<2.0.0')) {
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/complexTypev1.php');
+		} else {
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/complexTypev2.php');
+		}
 	}
 
 	/**
