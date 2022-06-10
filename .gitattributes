@@ -1,6 +1,7 @@
 *.php text eol=lf
 
 .github export-ignore
+build-cs export-ignore
 tests export-ignore
 tmp export-ignore
 .gitattributes export-ignore

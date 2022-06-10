@@ -86,7 +86,6 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 	}
 
 	/**
-	 * @param Type $type
 	 * @return array{Type, bool}
 	 */
 	private function extractOptional(Type $type): array
