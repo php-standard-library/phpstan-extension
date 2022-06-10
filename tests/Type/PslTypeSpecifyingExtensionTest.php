@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace PHPStan\Type\Psl;
+namespace Psl\PHPStan\Type;
 
 use PHPStan\Testing\TypeInferenceTestCase;
 
@@ -32,7 +32,7 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 	 */
 	public static function getAdditionalConfigFiles(): array
 	{
-		return [__DIR__ . '/../../../extension.neon'];
+		return [__DIR__ . '/../../extension.neon'];
 	}
 
 }

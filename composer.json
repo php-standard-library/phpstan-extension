@@ -36,7 +36,7 @@
     },
     "autoload": {
         "psr-4": {
-            "PHPStan\\": "src/"
+            "Psl\\PHPStan\\": "src/"
         }
     },
     "autoload-dev": {

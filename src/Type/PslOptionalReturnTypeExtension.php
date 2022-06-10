@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace PHPStan\Type\Psl;
+namespace Psl\PHPStan\Type;
 
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;

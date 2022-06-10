@@ -64,8 +64,8 @@
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
 			<property name="rootNamespaces" type="array">
-				<element key="src" value="PHPStan"/>
-				<element key="tests" value="PHPStan"/>
+				<element key="src" value="Psl\PHPStan"/>
+				<element key="tests" value="Psl\PHPStan"/>
 			</property>
 
 		</properties>

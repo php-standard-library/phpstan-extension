@@ -1,10 +1,9 @@
-
 services:
 	-
-		class: PHPStan\Type\Psl\PSLTypeSpecifyingExtension
+		class: Psl\PHPStan\Type\PSLTypeSpecifyingExtension
 		tags:
 			- phpstan.broker.dynamicFunctionReturnTypeExtension
 	-
-		class: PHPStan\Type\Psl\PslOptionalReturnTypeExtension
+		class: Psl\PHPStan\Type\PslOptionalReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicFunctionReturnTypeExtension
