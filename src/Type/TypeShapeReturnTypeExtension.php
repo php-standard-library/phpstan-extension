@@ -13,11 +13,14 @@ use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
+use PHPStan\Type\TypeUtils;
 use PHPStan\Type\UnionType;
 use Psl\Type\TypeInterface;
 use function array_keys;
 use function array_map;
 use function array_values;
+use function count;
 use function is_string;
 
 class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
@@ -31,15 +34,20 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 	public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
 	{
 		$arg = $scope->getType($functionCall->getArgs()[0]->value);
-
-		if (! $arg instanceof ConstantArrayType) {
+		$arrays = TypeUtils::getConstantArrays($arg);
+		if (count($arrays) === 0) {
 			return null;
+		}
+
+		$results = [];
+		foreach ($arrays as $array) {
+			$results[] = $this->createResult($scope, $array);
 		}
 
 		return new GenericObjectType(
 			TypeInterface::class,
 			[
-				$this->createResult($scope, $arg),
+				TypeCombinator::union(...$results),
 			]
 		);
 	}
