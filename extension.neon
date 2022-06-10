@@ -15,3 +15,8 @@ services:
 		class: Psl\PHPStan\Type\AssertTypeSpecifyingExtension
 		tags:
 			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
+
+	-
+		class: Psl\PHPStan\Type\MatchesTypeSpecifyingExtension
+		tags:
+			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
