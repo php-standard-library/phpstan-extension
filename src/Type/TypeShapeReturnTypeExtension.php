@@ -6,8 +6,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantArrayType;
-use PHPStan\Type\Constant\ConstantIntegerType;
-use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\DynamicFunctionReturnTypeExtension;
 use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
@@ -17,11 +16,7 @@ use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeUtils;
 use PHPStan\Type\UnionType;
 use Psl\Type\TypeInterface;
-use function array_keys;
-use function array_map;
-use function array_values;
 use function count;
-use function is_string;
 
 class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 {
@@ -55,38 +50,24 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 	private function createResult(Scope $scope, ConstantArrayType $arrayType): Type
 	{
 		$typeInterfaceType = new ObjectType(TypeInterface::class);
-		$properties = [];
-		$optionalKeys = [];
-		foreach ($arrayType->getKeyTypes() as $i => $key) {
-			$realKey = $key->getValue();
+		$builder = ConstantArrayTypeBuilder::createEmpty();
+		foreach ($arrayType->getKeyTypes() as $key) {
 			$valueType = $arrayType->getOffsetValueType($key);
-			recheck:
-
-			if ($valueType instanceof GenericObjectType && $valueType->accepts($typeInterfaceType, $scope->isDeclareStrictTypes())->yes()) {
-				$properties[$realKey] = $valueType->getTypes()[0];
-				continue;
-			}
-
+			$optional = false;
 			if ($valueType instanceof UnionType) {
 				$valueType = $valueType->getTypes()[0];
-				$optionalKeys[] = $i;
-				goto recheck;
+				$optional = true;
+			}
+
+			if ($valueType instanceof GenericObjectType && $valueType->accepts($typeInterfaceType, $scope->isDeclareStrictTypes())->yes()) {
+				$builder->setOffsetValueType($key, $valueType->getTypes()[0], $optional);
+				continue;
 			}
 
 			return new ErrorType();
 		}
 
-		$keys = array_map(
-			static fn ($key) => is_string($key) ? new ConstantStringType($key) : new ConstantIntegerType($key),
-			array_keys($properties)
-		);
-
-		return new ConstantArrayType(
-			$keys,
-			array_values($properties),
-			[0],
-			$optionalKeys
-		);
+		return $builder->getArray();
 	}
 
 }
