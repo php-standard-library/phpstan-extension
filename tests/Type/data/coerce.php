@@ -23,9 +23,10 @@ class GeneralTest
             ])),
         ]);
 
-        $input = $specification->coerce($input);
+        $output = $specification->coerce($input);
 
-        assertType('array{name: string, age: int, location?: array{city: string, state: string, country: string}}', $input);
+        assertType('array{name: string, age: int, location?: array{city: string, state: string, country: string}}', $output);
+        assertType('array', $input);
     }
 
 	public function coerceInt($i): void
@@ -33,6 +34,7 @@ class GeneralTest
 		$spec = Type\int();
 		$coerced = $spec->coerce($i);
 		assertType('int', $coerced);
+		assertType('mixed', $i);
 	}
 
 	public function coerceWrongShape(): void
