@@ -1,7 +1,7 @@
 {
-    "name": "backendtea/psl-phpstan-extension",
+    "name": "php-standard-library/phpstan-extension",
     "type": "phpstan-extension",
-    "description": "PHPStan psl extension",
+    "description": "PHPStan PSL extension",
     "license": [
         "MIT"
     ],
