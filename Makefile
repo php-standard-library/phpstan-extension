@@ -12,7 +12,7 @@ lint:
 
 .PHONY: cs
 cs:
-	cvendor/bin/phpcs
+	composer install --working-dir build-cs && php build-cs/vendor/bin/phpcs
 
 .PHONY: cs-fix
 cs-fix:
