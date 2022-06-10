@@ -20,7 +20,7 @@ use function array_map;
 use function array_values;
 use function is_string;
 
-class PSLTypeSpecifyingExtension implements DynamicFunctionReturnTypeExtension
+class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 {
 
 	public function isFunctionSupported(FunctionReflection $functionReflection): bool
