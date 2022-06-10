@@ -27,8 +27,12 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 
 	public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
 	{
-		// todo check no-arg call
-		$arg = $scope->getType($functionCall->getArgs()[0]->value);
+		$args = $functionCall->getArgs();
+		if (!isset($args[0])) {
+			return null;
+		}
+
+		$arg = $scope->getType($args[0]->value);
 		$arrays = TypeUtils::getConstantArrays($arg);
 		if (count($arrays) === 0) {
 			return null;

@@ -34,4 +34,9 @@ class GeneralTest
 		$coerced = $spec->coerce($i);
 		assertType('int', $coerced);
 	}
+
+	public function coerceWrongShape(): void
+	{
+		Type\shape();
+	}
 }
