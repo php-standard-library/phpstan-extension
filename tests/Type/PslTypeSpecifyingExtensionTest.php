@@ -17,11 +17,12 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 
 	/**
 	 * @dataProvider dataFileAsserts
+	 * @param mixed ...$args
 	 */
 	public function testFileAsserts(
 		string $assertType,
 		string $file,
-		mixed ...$args
+		...$args
 	): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);
