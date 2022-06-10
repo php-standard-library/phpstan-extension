@@ -34,11 +34,4 @@ class GeneralTest
 		$coerced = $spec->coerce($i);
 		assertType('int', $coerced);
 	}
-
-	public function coerceClassString(object $obj): void
-	{
-		$spec = Type\instance_of(\stdClass::class);
-		$coerced = $spec->coerce($spec);
-		assertType('stdClass', $coerced);
-	}
 }
