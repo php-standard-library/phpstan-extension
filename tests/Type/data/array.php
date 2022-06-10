@@ -11,7 +11,7 @@ class GeneralTest
     /**
      * @param array<mixed> $input
      */
-    public function coerceEasy(array $input): void
+    public function coerceShape(array $input): void
     {
         $specification = Type\shape([
             'name' => Type\string(),
@@ -27,4 +27,18 @@ class GeneralTest
 
         assertType('array{name: string, age: int, location?: array{city: string, state: string, country: string}}', $input);
     }
+
+	public function coerceInt($i): void
+	{
+		$spec = Type\int();
+		$coerced = $spec->coerce($i);
+		assertType('int', $coerced);
+	}
+
+	public function coerceClassString(object $obj): void
+	{
+		$spec = Type\instance_of(\stdClass::class);
+		$coerced = $spec->coerce($spec);
+		assertType('stdClass', $coerced);
+	}
 }
