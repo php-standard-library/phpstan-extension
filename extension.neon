@@ -10,3 +10,8 @@ services:
 		class: Psl\PHPStan\Type\TypeShapeReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicFunctionReturnTypeExtension
+
+	-
+		class: Psl\PHPStan\Type\AssertTypeSpecifyingExtension
+		tags:
+			- phpstan.typeSpecifier.methodTypeSpecifyingExtension

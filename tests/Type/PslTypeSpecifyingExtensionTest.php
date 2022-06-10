@@ -13,6 +13,7 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 	public function dataFileAsserts(): iterable
 	{
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/coerce.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/assert.php');
 	}
 
 	/**
