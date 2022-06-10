@@ -77,6 +77,9 @@ jobs:
           - "7.4"
           - "8.0"
           - "8.1"
+        dependencies:
+          - "lowest"
+          - "highest"
 
     steps:
       - name: "Checkout"
@@ -88,7 +91,12 @@ jobs:
           coverage: "none"
           php-version: "${{ matrix.php-version }}"
 
-      - name: "Install dependencies"
+      - name: "Install lowest dependencies"
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: "composer update --prefer-lowest --no-interaction --no-progress"
+
+      - name: "Install highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
         run: "composer update --no-interaction --no-progress"
 
       - name: "Tests"
@@ -105,6 +113,9 @@ jobs:
           - "7.4"
           - "8.0"
           - "8.1"
+        dependencies:
+          - "lowest"
+          - "highest"
 
     steps:
       - name: "Checkout"
@@ -118,7 +129,12 @@ jobs:
           extensions: mbstring
           tools: composer:v2
 
-      - name: "Install dependencies"
+      - name: "Install lowest dependencies"
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: "composer update --prefer-lowest --no-interaction --no-progress"
+
+      - name: "Install highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
         run: "composer update --no-interaction --no-progress"
 
       - name: "PHPStan"
