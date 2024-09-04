@@ -8,11 +8,11 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\DynamicFunctionReturnTypeExtension;
+use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeUtils;
-use PHPStan\Type\TypeWithClassName;
 use Psl\Type\Internal\OptionalType;
 use Psl\Type\TypeInterface;
 use function count;
@@ -40,12 +40,7 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 
 		$results = [];
 		foreach ($arrays as $array) {
-			$result = $this->createResult($array);
-			if ($result === null) {
-				return null;
-			}
-
-			$results[] = $result;
+			$results[] = $this->createResult($array);
 		}
 
 		return new GenericObjectType(
@@ -56,32 +51,12 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 		);
 	}
 
-	private function createResult(ConstantArrayType $arrayType): ?Type
+	private function createResult(ConstantArrayType $arrayType): Type
 	{
 		$builder = ConstantArrayTypeBuilder::createEmpty();
 		foreach ($arrayType->getKeyTypes() as $key) {
 			$valueType = $arrayType->getOffsetValueType($key);
-			if (!$valueType instanceof TypeWithClassName) {
-				return null;
-			}
-
-			$valueClassReflection = $valueType->getClassReflection();
-			if ($valueClassReflection === null) {
-				return null;
-			}
-
-			$typeInterfaceAncestor = $valueClassReflection->getAncestorWithClassName(TypeInterface::class);
-			if ($typeInterfaceAncestor === null) {
-				return null;
-			}
-
-			$typeMap = $typeInterfaceAncestor->getActiveTemplateTypeMap();
-			$t = $typeMap->getType('T');
-			if ($t === null) {
-				return null;
-			}
-
-			[$type, $optional] = $this->extractOptional($t);
+			[$type, $optional] = $this->extractOptional($valueType->getTemplateType(TypeInterface::class, 'T'));
 
 			$builder->setOffsetValueType($key, $type, $optional);
 		}
@@ -94,26 +69,12 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 	 */
 	private function extractOptional(Type $type): array
 	{
-		if (!$type instanceof TypeWithClassName) {
+		$optionalType = $type->getTemplateType(OptionalType::class, 'T');
+		if ($optionalType instanceof ErrorType) {
 			return [$type, false];
 		}
 
-		$classReflection = $type->getClassReflection();
-		if ($classReflection === null) {
-			return [$type, false];
-		}
-		$optionalTypeAncestor = $classReflection->getAncestorWithClassName(OptionalType::class);
-		if ($optionalTypeAncestor === null) {
-			return [$type, false];
-		}
-
-		$typeMap = $optionalTypeAncestor->getActiveTemplateTypeMap();
-		$t = $typeMap->getType('T');
-		if ($t === null) {
-			return [$type, false];
-		}
-
-		return [$t, true];
+		return [$optionalType, true];
 	}
 
 }

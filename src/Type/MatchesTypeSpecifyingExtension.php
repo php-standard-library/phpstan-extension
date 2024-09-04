@@ -10,7 +10,6 @@ use PHPStan\Analyser\TypeSpecifierAwareExtension;
 use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
-use PHPStan\Type\TypeWithClassName;
 use Psl\Type\TypeInterface;
 
 class MatchesTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
@@ -41,29 +40,10 @@ class MatchesTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, T
 		}
 
 		$specType = $scope->getType($node->var);
-		if (!$specType instanceof TypeWithClassName) {
-			return new SpecifiedTypes();
-		}
-
-		$specTypeReflection = $specType->getClassReflection();
-		if ($specTypeReflection === null) {
-			return new SpecifiedTypes();
-		}
-
-		$typeInterfaceAncestor = $specTypeReflection->getAncestorWithClassName(TypeInterface::class);
-		if ($typeInterfaceAncestor === null) {
-			return new SpecifiedTypes();
-		}
-
-		$typeMap = $typeInterfaceAncestor->getActiveTemplateTypeMap();
-		$t = $typeMap->getType('T');
-		if ($t === null) {
-			return new SpecifiedTypes();
-		}
 
 		return $this->typeSpecifier->create(
 			$args[0]->value,
-			$t,
+			$specType->getTemplateType(TypeInterface::class, 'T'),
 			$context
 		);
 	}
