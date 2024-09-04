@@ -10,10 +10,10 @@
         "phpstan/phpstan": "^1.7"
     },
     "conflict": {
-        "azjezz/psl": "<1.6||>=3.0"
+        "azjezz/psl": "<1.6||>=4.0"
     },
     "require-dev": {
-        "azjezz/psl": "^1.6||^2.0",
+        "azjezz/psl": "^1.6||^2.0||^3.0",
         "composer/semver": "^3.3",
         "nikic/php-parser": "^4.14.0",
         "php-parallel-lint/php-parallel-lint": "^1.2",
