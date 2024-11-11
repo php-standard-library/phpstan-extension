@@ -12,7 +12,6 @@ use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\TypeUtils;
 use Psl\Type\Internal\OptionalType;
 use Psl\Type\TypeInterface;
 use function count;
@@ -33,7 +32,7 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 		}
 
 		$arg = $scope->getType($args[0]->value);
-		$arrays = TypeUtils::getConstantArrays($arg);
+		$arrays = $arg->getConstantArrays();
 		if (count($arrays) === 0) {
 			return null;
 		}

@@ -42,7 +42,8 @@ class AssertTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, Ty
 		return $this->typeSpecifier->create(
 			$args[0]->value,
 			$scope->getType($node),
-			TypeSpecifierContext::createTruthy()
+			TypeSpecifierContext::createTruthy(),
+			$scope
 		);
 	}
 

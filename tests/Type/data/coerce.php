@@ -26,7 +26,7 @@ class GeneralTest
         $output = $specification->coerce($input);
 
         assertType('array{name: string, age: int, location?: array{city: string, state: string, country: string}}', $output);
-        assertType('array', $input);
+        assertType('array<mixed>', $input);
     }
 
 	public function coerceInt($i): void

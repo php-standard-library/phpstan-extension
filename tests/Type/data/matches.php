@@ -26,7 +26,7 @@ class MatchesTest
 		if ($specification->matches($a)) {
 			assertType('array{name: string, age: int, location?: array{city: string, state: string, country: string}}', $a);
 		} else {
-			assertType('array', $a);
+			assertType('array<mixed>', $a);
 		}
 	}
 

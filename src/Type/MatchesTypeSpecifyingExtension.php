@@ -44,7 +44,8 @@ class MatchesTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, T
 		return $this->typeSpecifier->create(
 			$args[0]->value,
 			$specType->getTemplateType(TypeInterface::class, 'T'),
-			$context
+			$context,
+			$scope
 		);
 	}
 
