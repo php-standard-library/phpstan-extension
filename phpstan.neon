@@ -1,5 +1,6 @@
 includes:
 	- extension.neon
+	- phpstan-baseline-psl-1.neon
 	- vendor/phpstan/phpstan-phpunit/extension.neon
 	- vendor/phpstan/phpstan-phpunit/rules.neon
 	- vendor/phpstan/phpstan-strict-rules/rules.neon
@@ -8,3 +9,19 @@ includes:
 parameters:
 	excludePaths:
 		- tests/*/data/*
+
+	reportUnmatchedIgnoredErrors: false
+
+	ignoreErrors:
+		-
+			message: '~^Parameter #1 \$assertType of method Psl\\PHPStan\\Option\\PslTypeSpecifyingExtensionTest::testFileAsserts\(\) expects string, mixed given\.~'
+			path: tests/Option/PslTypeSpecifyingExtensionTest.php
+		-
+			message: '~^Parameter #2 \$file of method Psl\\PHPStan\\Option\\PslTypeSpecifyingExtensionTest::testFileAsserts\(\) expects string, mixed given\.~'
+			path: tests/Option/PslTypeSpecifyingExtensionTest.php
+		-
+			message: '~^Parameter #1 \$assertType of method Psl\\PHPStan\\Type\\PslTypeSpecifyingExtensionTest::testFileAsserts\(\) expects string, mixed given\.~'
+			path:  tests/Type/PslTypeSpecifyingExtensionTest.php
+		-
+			message: '~^Parameter #2 \$file of method Psl\\PHPStan\\Type\\PslTypeSpecifyingExtensionTest::testFileAsserts\(\) expects string, mixed given\.~'
+			path:  tests/Type/PslTypeSpecifyingExtensionTest.php

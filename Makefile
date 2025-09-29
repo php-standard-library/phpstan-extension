@@ -16,7 +16,7 @@ cs:
 
 .PHONY: cs-fix
 cs-fix:
-	vendor/bin/phpcbf
+	build-cs/vendor/bin/phpcbf
 
 .PHONY: phpstan
 phpstan:

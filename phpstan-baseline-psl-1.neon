@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Class Psl\\Option\\Option not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Option/OptionFilterReturnTypeExtension.php
+
+		-
+			message: '#^Parameter \#1 \$ancestorClassName of method PHPStan\\Type\\Type\:\:getTemplateType\(\) expects class\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Option/OptionFilterReturnTypeExtension.php

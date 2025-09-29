@@ -1,5 +1,6 @@
 parameters:
 	stubFiles:
+		- stubs/Option.stub
 		- stubs/optional.stub
 		- stubs/OptionalType.stub
 		- stubs/Type.stub
@@ -20,3 +21,8 @@ services:
 		class: Psl\PHPStan\Type\MatchesTypeSpecifyingExtension
 		tags:
 			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
+
+	-
+		class: Psl\PHPStan\Option\OptionFilterReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension

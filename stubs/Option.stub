@@ -1,0 +1,31 @@
+<?php
+
+namespace Psl\Option;
+
+use Closure;
+use Psl\Comparison;
+use Psl\Type;
+
+/**
+ * @template T
+ *
+ * @readonly
+ */
+final class Option
+{
+
+    /**
+     * Returns none if the option is none, otherwise calls `$predicate` with the wrapped value and returns:
+     *  - Option<T>::some() if `$predicate` returns true (where t is the wrapped value), and
+     *  - Option<T>::none() if `$predicate` returns false.
+     *
+     * @param (Closure(T): bool) $predicate
+     *
+     * @param-immediately-invoked-callable $predicate
+     *
+     * @return Option<T>
+     */
+    public function filter(Closure $predicate): Option
+    {
+    }
+}
