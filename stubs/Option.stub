@@ -1,0 +1,16 @@
+<?php
+
+namespace Psl\Option;
+
+use Closure;
+use Psl\Comparison;
+use Psl\Type;
+
+/**
+ * @template T
+ *
+ * @readonly
+ */
+final class Option
+{
+}
