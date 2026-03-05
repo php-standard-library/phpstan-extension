@@ -10,7 +10,7 @@
         "phpstan/phpstan": "^2.0"
     },
     "conflict": {
-        "azjezz/psl": "<1.6||>=5.0"
+        "azjezz/psl": "<1.6||>=6.0"
     },
     "require-dev": {
         "azjezz/psl": "^1.6||^2.0||^3.0||^4.0",
