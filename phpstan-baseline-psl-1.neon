@@ -11,3 +11,15 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Option/OptionFilterReturnTypeExtension.php
+
+		-
+			message: '#^Class Psl\\Type\\Internal\\NullishType not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Type/TypeShapeReturnTypeExtension.php
+
+		-
+			message: '#^Parameter \#1 \$ancestorClassName of method PHPStan\\Type\\Type\:\:getTemplateType\(\) expects class\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Type/TypeShapeReturnTypeExtension.php
