@@ -5,6 +5,8 @@ namespace Psl\PHPStan\Type;
 use Composer\InstalledVersions;
 use Composer\Semver\VersionParser;
 use PHPStan\Testing\TypeInferenceTestCase;
+use Psl\Type\Internal\NullishType;
+use function class_exists;
 
 class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 {
@@ -17,7 +19,7 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/coerce.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/assert.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/matches.php');
-		if (class_exists(\Psl\Type\Internal\NullishType::class)) {
+		if (class_exists(NullishType::class)) {
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/nullishCoerce.php');
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/nullishAssert.php');
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/nullishMatches.php');
