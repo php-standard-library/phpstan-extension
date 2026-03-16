@@ -12,7 +12,6 @@ use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use Psl\Type\Internal\NullishType;
 use Psl\Type\Internal\OptionalType;
 use Psl\Type\TypeInterface;
 use function count;
@@ -71,7 +70,7 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 	 */
 	private function extractNullish(Type $type): array
 	{
-		$nullishType = $type->getTemplateType(NullishType::class, 'T');
+		$nullishType = $type->getTemplateType('Psl\Type\Internal\NullishType', 'T');
 		if ($nullishType instanceof ErrorType) {
 			return [$type, false];
 		}
