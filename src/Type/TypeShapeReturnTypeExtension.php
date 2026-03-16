@@ -12,6 +12,7 @@ use PHPStan\Type\ErrorType;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use Psl\Type\Internal\NullishType;
 use Psl\Type\Internal\OptionalType;
 use Psl\Type\TypeInterface;
 use function count;
@@ -55,12 +56,27 @@ class TypeShapeReturnTypeExtension implements DynamicFunctionReturnTypeExtension
 		$builder = ConstantArrayTypeBuilder::createEmpty();
 		foreach ($arrayType->getKeyTypes() as $key) {
 			$valueType = $arrayType->getOffsetValueType($key);
-			[$type, $optional] = $this->extractOptional($valueType->getTemplateType(TypeInterface::class, 'T'));
+			$templateType = $valueType->getTemplateType(TypeInterface::class, 'T');
+			[$type, $optional] = $this->extractOptional($templateType);
+			[$type] = $this->extractNullish($type);
 
 			$builder->setOffsetValueType($key, $type, $optional);
 		}
 
 		return $builder->getArray();
+	}
+
+	/**
+	 * @return array{Type, bool}
+	 */
+	private function extractNullish(Type $type): array
+	{
+		$nullishType = $type->getTemplateType(NullishType::class, 'T');
+		if ($nullishType instanceof ErrorType) {
+			return [$type, false];
+		}
+
+		return [TypeCombinator::addNull($nullishType), false];
 	}
 
 	/**
