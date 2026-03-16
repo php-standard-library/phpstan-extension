@@ -1,6 +1,8 @@
 parameters:
 	stubFiles:
 		- stubs/Option.stub
+		- stubs/nullish.stub
+		- stubs/NullishType.stub
 		- stubs/optional.stub
 		- stubs/OptionalType.stub
 		- stubs/Type.stub

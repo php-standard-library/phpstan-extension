@@ -1,0 +1,17 @@
+<?php
+
+namespace Psl\Type;
+
+use Psl\Type\Internal\NullishType;
+
+/**
+ * @template T
+ *
+ * @param TypeInterface<T> $inner_type
+ *
+ * @return TypeInterface<NullishType<T>>
+ */
+function nullish(TypeInterface $inner_type): TypeInterface
+{
+
+}

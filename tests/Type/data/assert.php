@@ -29,6 +29,37 @@ class AssertTest
 		assertType('array{name: string, age: int, location?: array{city: string, state: string, country: string}}', $b);
 	}
 
+	/**
+	 * @param array<mixed> $a
+	 */
+	public function assertNullishShape(array $a): void
+	{
+		$specification = Type\shape([
+			'name' => Type\string(),
+			'bio' => Type\nullish(Type\string()),
+		]);
+
+		$b = $specification->assert($a);
+
+		assertType('array{name: string, bio: string|null}', $a);
+		assertType('array{name: string, bio: string|null}', $b);
+	}
+
+	/**
+	 * @param array<mixed> $a
+	 */
+	public function assertOptionalNullishShape(array $a): void
+	{
+		$specification = Type\shape([
+			'bio' => Type\optional(Type\nullish(Type\string())),
+		]);
+
+		$b = $specification->assert($a);
+
+		assertType('array{bio?: string|null}', $a);
+		assertType('array{bio?: string|null}', $b);
+	}
+
 	public function assertInt($i): void
 	{
 		$spec = Type\int();
