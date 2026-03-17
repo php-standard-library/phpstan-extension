@@ -24,7 +24,7 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/nullishAssert.php');
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/nullishMatches.php');
 		}
-		if (InstalledVersions::satisfies(new VersionParser(), 'azjezz/psl', '<2.0.0')) {
+		if (InstalledVersions::satisfies(new VersionParser(), 'php-standard-library/php-standard-library', '<2.0.0')) {
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/complexTypev1.php');
 		} else {
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/complexTypev2.php');

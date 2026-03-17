@@ -29,8 +29,8 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 		...$args
 	): void
 	{
-		if (!InstalledVersions::satisfies(new VersionParser(), 'azjezz/psl', '>=2.2.0')) {
-			Assert::markTestSkipped(sprintf('Option component is not available in current azjezz/psl installed version'));
+		if (!InstalledVersions::satisfies(new VersionParser(), 'php-standard-library/php-standard-library', '>=2.2.0')) {
+			Assert::markTestSkipped(sprintf('Option component is not available in current php-standard-library/php-standard-library installed version'));
 		}
 
 		$this->assertFileAsserts($assertType, $file, ...$args);
