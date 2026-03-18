@@ -5,7 +5,7 @@
 [![License](https://poser.pugx.org/php-standard-library/phpstan-extension/license)](https://packagist.org/packages/php-standard-library/phpstan-extension)
 
 * [PHPStan](https://phpstan.org/)
-* [PSL](https://github.com/azjezz/psl)
+* [PSL](https://github.com/php-standard-library/php-standard-library)
 
 ## Description
 
