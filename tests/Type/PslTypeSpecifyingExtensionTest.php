@@ -28,6 +28,7 @@ class PslTypeSpecifyingExtensionTest extends TypeInferenceTestCase
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/complexTypev1.php');
 		} else {
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/complexTypev2.php');
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/unionV2.php');
 		}
 	}
 
